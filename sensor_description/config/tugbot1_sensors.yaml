@@ -1,0 +1,30 @@
+
+velodyne:
+  name: velodyne
+  parent: arch
+  position:
+    x: 0.0
+    y: 0.17
+    z: 0.50
+  orientation:
+    r: 0.0
+    p: 0.0
+    y: 3.142
+  rate: 10
+  topic_name: velodyne_points
+vn100:
+  name: imu
+  parent: arch
+  topic_name: imu/data
+  position:
+    x: 0.00
+    y: 0.17
+    z: 0.23
+  orientation:
+    r: 0
+    p: 0
+    y: 1.571
+  rate: 20
+
+
+# <node pkg="tf2_ros" type="static_transform_publisher" name="imu_tf"     args="0.14 0.02 0.25 0 0 0 base_link imu_link"/>       

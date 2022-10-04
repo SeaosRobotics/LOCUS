@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<robot name="tugbot_sensors" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="sensor_props" value="${load_yaml('$(find sensor_description)/config/$(arg robot_namespace)_sensors.yaml')}" />
+
+
+  <link name="odom"/>
+
+  <!-- Base Link -->
+  <link name="base_link"/>
+
+  <!-- Arch -->
+  <link name="arch"/>
+
+  <!-- IMU -->
+  <link name="imu_link"> </link>
+
+  <joint name="top_plate_link_to_arch" type="fixed">
+    <parent link="base_link" />
+    <child link="arch" />
+    <origin xyz="0.0 0 0.05" rpy="0 0 0" />
+  </joint>
+
+  <!-- VLP-16 -->
+  <xacro:include filename="$(find sensor_description)/urdf/sensors/VLP-16.urdf.xacro" />
+
+  <xacro:VLP-16
+      parent="${sensor_props['velodyne']['parent']}"
+      name="${sensor_props['velodyne']['name']}"
+      topic="${sensor_props['velodyne']['topic_name']}"
+      hz="${sensor_props['velodyne']['rate']}"
+      samples="440"
+      noise="0.016"
+      gpu="true">
+    <origin xyz="${sensor_props['velodyne']['position']['x']}
+                 ${sensor_props['velodyne']['position']['y']}
+                 ${sensor_props['velodyne']['position']['z']}"
+            rpy="${sensor_props['velodyne']['orientation']['r']}
+                 ${sensor_props['velodyne']['orientation']['p']}
+                 ${sensor_props['velodyne']['orientation']['y']}" />
+  </xacro:VLP-16>
+
+  <!-- VN100 -->
+
+  <joint name="imu_link_to_arch" type="fixed">
+   <parent link="arch" />
+    <child link="imu_link" />
+    <origin xyz="0.0 0 0.05" rpy="0 0 0" />
+  </joint>
+
+
+  <joint name="odom_joint" type="fixed">
+    <parent link="odom" />
+    <child link="base_link" />
+    <origin xyz="0.0 0 0.01" rpy="0 0 0" />
+  </joint>
+ 
+
+</robot>
